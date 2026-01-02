@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Details</title>
+</head>
+<body>
+  <div id="product"></div>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("id");
+
+    async function loadProduct() {
+      const data = await apiRequest(`/products/${productId}`);
+
+      if (!data.success) {
+        document.getElementById("product").innerText = "Product not found";
+        return;
+      }
+
+      const p = data.object;
+
+      document.getElementById("product").innerHTML = `
+        <h1>${p.name}</h1>
+        <p>${p.description}</p>
+        <p>Price: $${p.price}</p>
+        <p>Stock: ${p.stock}</p>
+        <p>Category: ${p.category}</p>
+      `;
+    }
+
+    loadProduct();
+  </script>
+</body>
+</html>
